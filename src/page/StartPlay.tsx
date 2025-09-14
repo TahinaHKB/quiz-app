@@ -116,7 +116,10 @@ export default function StartPlay() {
       setShuffledAnswers(answers);
       // Scroll automatique vers la question à chaque nouvelle question
       setTimeout(() => {
-        questionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+        questionRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
       }, 50);
     }
   }, [currentIndex, questions]);
@@ -222,7 +225,8 @@ export default function StartPlay() {
         {/* Settings */}
         <div className="bg-gray-100 p-4 rounded-xl text-left text-gray-700 space-y-2 break-words">
           <p>
-            <strong>Mode:</strong> {mode === "chrono" ? "With Timer" : "Without Timer"}
+            <strong>Mode:</strong>{" "}
+            {mode === "chrono" ? "With Timer" : "Without Timer"}
           </p>
           <p>
             <strong>Category:</strong>{" "}
@@ -230,17 +234,21 @@ export default function StartPlay() {
               ? category === "aleatoire"
                 ? "Random"
                 : selectedCategoryId
-                ? categories.find((c) => c.id === parseInt(selectedCategoryId))?.name
+                ? categories.find((c) => c.id === parseInt(selectedCategoryId))
+                    ?.name
                 : "Selected"
               : "—"}
           </p>
           <p>
             <strong>Difficulty:</strong>{" "}
-            {difficulty ? difficulty.charAt(0).toUpperCase() + difficulty.slice(1) : "—"}
+            {difficulty
+              ? difficulty.charAt(0).toUpperCase() + difficulty.slice(1)
+              : "—"}
           </p>
           {mode === "chrono" && !quizFinished && (
             <p>
-              <strong>Questions remaining:</strong> {questions.length - currentIndex}
+              <strong>Questions remaining:</strong>{" "}
+              {questions.length - currentIndex}
             </p>
           )}
         </div>
@@ -248,7 +256,7 @@ export default function StartPlay() {
         {/* Question */}
         {!quizFinished && (
           <div ref={questionRef} className="mt-4 text-left w-full break-words">
-            <p className="font-semibold text-lg md:text-xl break-words">
+            <p className="font-semibold text-lg md:text-xl break-words text-red-500">
               {currentIndex + 1}. {decodeHtml(currentQuestion.question.text)}
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
