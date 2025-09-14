@@ -259,7 +259,7 @@ export default function StartPlay() {
             <p className="font-semibold text-lg md:text-xl break-words text-blue-700">
               {currentIndex + 1}. {decodeHtml(currentQuestion.question.text)}
             </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 text-black-500">
               {shuffledAnswers.map((ans) => (
                 <button
                   key={ans}
