@@ -17,7 +17,7 @@ export type TriviaQuestion = {
   isNiche: boolean;
 };
 
-// Fonction pour décoder les entités HTML
+// Décoder les entités HTML
 const decodeHtml = (html: string) => {
   const txt = document.createElement("textarea");
   txt.innerHTML = html;
@@ -180,39 +180,41 @@ export default function StartPlay() {
 
   if (loading)
     return (
-      <div className="flex items-center justify-center h-screen">
+      <div className="flex items-center justify-center h-screen p-4">
         <p className="text-xl font-semibold">Loading questions...</p>
       </div>
     );
 
   if (!questions.length)
     return (
-      <div className="flex items-center justify-center h-screen">
-        <p className="text-red-500">No questions found for these parameters.</p>
+      <div className="flex items-center justify-center h-screen p-4">
+        <p className="text-red-500 text-center">
+          No questions found for these parameters.
+        </p>
       </div>
     );
 
-  const currentQuestion = questions[currentIndex];
+  const currentQuestion: TriviaQuestion = questions[currentIndex];
   const minutes = Math.floor(timeLeft / 60);
   const seconds = timeLeft % 60;
 
   return (
-    <main className="flex-1 flex flex-col items-center justify-center p-6 md:p-10 bg-gradient-to-br from-blue-50 via-white to-pink-50 relative">
-      <div className="bg-white p-6 md:p-12 rounded-3xl shadow-2xl w-full max-w-md md:max-w-3xl mx-auto text-center space-y-6">
-        <h2 className="text-3xl md:text-4xl font-extrabold text-blue-700">
+    <main className="flex-1 flex flex-col items-center justify-start p-4 md:p-10 bg-gradient-to-br from-blue-50 via-white to-pink-50 min-h-screen">
+      <div className="bg-white p-6 md:p-12 rounded-3xl shadow-2xl w-full max-w-md md:max-w-3xl mx-auto text-center space-y-6 overflow-visible">
+        <h2 className="text-2xl md:text-4xl font-extrabold text-blue-700 break-words">
           Quiz in Progress
         </h2>
 
         {/* Timer */}
         {mode === "chrono" && !quizFinished && (
-          <div className="text-center text-xl font-bold text-red-600">
+          <div className="text-center text-lg md:text-xl font-bold text-red-600">
             Time Left: {minutes.toString().padStart(2, "0")}:
             {seconds.toString().padStart(2, "0")}
           </div>
         )}
 
         {/* Settings */}
-        <div className="bg-gray-100 p-4 rounded-xl text-left text-gray-700 space-y-2">
+        <div className="bg-gray-100 p-4 rounded-xl text-left text-gray-700 space-y-2 break-words">
           <p>
             <strong>Mode:</strong>{" "}
             {mode === "chrono" ? "With Timer" : "Without Timer"}
@@ -244,17 +246,17 @@ export default function StartPlay() {
 
         {/* Question */}
         {!quizFinished && (
-          <div className="mt-6 text-left w-full break-words">
-            <p className="font-semibold text-lg">
+          <div className="mt-4 text-left w-full break-words">
+            <p className="font-semibold text-lg md:text-xl break-words">
               {currentIndex + 1}. {decodeHtml(currentQuestion.question.text)}
             </p>
-            <div className="grid grid-cols-1 gap-4 mt-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
               {shuffledAnswers.map((ans) => (
                 <button
                   key={ans}
                   onClick={() => handleAnswer(ans)}
                   disabled={!!selectedAnswer}
-                  className={`p-3 rounded-xl hover:bg-blue-200 disabled:opacity-50 transition-colors ${
+                  className={`p-3 rounded-xl text-left break-words hover:bg-blue-200 disabled:opacity-50 transition-colors ${
                     showCorrect && ans === currentQuestion.correctAnswer
                       ? "bg-green-300"
                       : "bg-blue-100"
@@ -264,8 +266,9 @@ export default function StartPlay() {
                 </button>
               ))}
             </div>
+
             {selectedAnswer && (
-              <div className="mt-4 font-bold space-y-1">
+              <div className="mt-4 font-bold space-y-1 break-words">
                 <p>
                   Your choice:{" "}
                   <span
@@ -299,8 +302,8 @@ export default function StartPlay() {
         {quizFinished && (
           <>
             <div className="fixed inset-0 bg-black bg-opacity-50 z-40 backdrop-blur-sm"></div>
-            <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-11/12 max-w-md bg-gradient-to-br from-white via-blue-50 to-pink-50 p-8 rounded-3xl shadow-2xl text-center space-y-6 z-50 animate-fadeIn">
-              <h2 className="text-3xl md:text-4xl font-extrabold text-blue-700">
+            <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-11/12 max-w-md bg-gradient-to-br from-white via-blue-50 to-pink-50 p-8 rounded-3xl shadow-2xl text-center space-y-6 z-50 animate-fadeIn break-words">
+              <h2 className="text-3xl md:text-4xl font-extrabold text-blue-700 break-words">
                 Quiz Finished!
               </h2>
               <p className="text-gray-600 text-sm md:text-base">
