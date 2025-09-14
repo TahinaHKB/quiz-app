@@ -17,6 +17,13 @@ export type TriviaQuestion = {
   isNiche: boolean;
 };
 
+// Fonction pour décoder les entités HTML
+const decodeHtml = (html: string) => {
+  const txt = document.createElement("textarea");
+  txt.innerHTML = html;
+  return txt.value;
+};
+
 export default function StartPlay() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -32,7 +39,7 @@ export default function StartPlay() {
   const [quizFinished, setQuizFinished] = useState(false);
   const [timeLeft, setTimeLeft] = useState(0);
   const [shuffledAnswers, setShuffledAnswers] = useState<string[]>([]);
-  const [animatedScore, setAnimatedScore] = useState(0); // For points animation
+  const [animatedScore, setAnimatedScore] = useState(0);
   const [secondPerQuestion, setSecondPerQuestion] = useState(15);
 
   const translate = (dif: string) => {
@@ -191,7 +198,7 @@ export default function StartPlay() {
 
   return (
     <main className="flex-1 flex flex-col items-center justify-center p-6 md:p-10 bg-gradient-to-br from-blue-50 via-white to-pink-50 relative">
-      <div className="bg-white p-8 md:p-12 rounded-3xl shadow-2xl w-full max-w-md md:max-w-3xl mx-auto text-center space-y-6">
+      <div className="bg-white p-6 md:p-12 rounded-3xl shadow-2xl w-full max-w-md md:max-w-3xl mx-auto text-center space-y-6">
         <h2 className="text-3xl md:text-4xl font-extrabold text-blue-700">
           Quiz in Progress
         </h2>
@@ -237,9 +244,9 @@ export default function StartPlay() {
 
         {/* Question */}
         {!quizFinished && (
-          <div className="mt-6 text-left w-full">
+          <div className="mt-6 text-left w-full break-words">
             <p className="font-semibold text-lg">
-              {currentIndex + 1}. {currentQuestion.question.text}
+              {currentIndex + 1}. {decodeHtml(currentQuestion.question.text)}
             </p>
             <div className="grid grid-cols-1 gap-4 mt-4">
               {shuffledAnswers.map((ans) => (
@@ -253,7 +260,7 @@ export default function StartPlay() {
                       : "bg-blue-100"
                   }`}
                 >
-                  {ans}
+                  {decodeHtml(ans)}
                 </button>
               ))}
             </div>
@@ -268,13 +275,13 @@ export default function StartPlay() {
                         : "text-red-600"
                     }
                   >
-                    {selectedAnswer}
+                    {decodeHtml(selectedAnswer)}
                   </span>
                 </p>
                 <p>
                   Correct answer:{" "}
                   <span className="text-green-600">
-                    {currentQuestion.correctAnswer}
+                    {decodeHtml(currentQuestion.correctAnswer)}
                   </span>
                 </p>
                 <button
