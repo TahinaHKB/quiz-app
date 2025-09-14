@@ -263,7 +263,7 @@ export default function StartPlay() {
                 <button
                   key={ans}
                   onClick={() => setSelectedAnswer(ans)}
-                  className={`p-3 rounded-xl text-left break-words hover:bg-blue-200 transition-colors ${
+                  className={`p-3 text-blue-500 rounded-xl text-left break-words hover:bg-blue-200 transition-colors ${
                     selectedAnswer === ans ? "bg-blue-300" : "bg-blue-100"
                   }`}
                 >
@@ -285,7 +285,7 @@ export default function StartPlay() {
             {/* Résultat */}
             {showCorrect && (
               <div className="mt-4 font-bold space-y-1 break-words">
-                <p>
+                <p className="text-blue-500">
                   Your choice:{" "}
                   <span
                     className={
@@ -297,7 +297,7 @@ export default function StartPlay() {
                     {decodeHtml(selectedAnswer!)}
                   </span>
                 </p>
-                <p>
+                <p className="text-blue-500">
                   Correct answer:{" "}
                   <span className="text-green-600">
                     {decodeHtml(currentQuestion.correctAnswer)}
