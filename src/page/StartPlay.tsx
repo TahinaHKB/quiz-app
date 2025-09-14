@@ -278,7 +278,7 @@ export default function StartPlay() {
                 onClick={handleValidate}
                 className="mt-4 w-full py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-2xl shadow-md hover:scale-105 transition-transform duration-300"
               >
-                Valider
+                Submit
               </button>
             )}
 
