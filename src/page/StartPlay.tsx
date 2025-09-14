@@ -256,7 +256,7 @@ export default function StartPlay() {
         {/* Question */}
         {!quizFinished && (
           <div ref={questionRef} className="mt-4 text-left w-full break-words">
-            <p className="font-semibold text-lg md:text-xl break-words text-red-500">
+            <p className="font-semibold text-lg md:text-xl break-words text-blue-700">
               {currentIndex + 1}. {decodeHtml(currentQuestion.question.text)}
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
@@ -278,7 +278,7 @@ export default function StartPlay() {
 
             {selectedAnswer && (
               <div className="mt-4 font-bold space-y-1 break-words">
-                <p>
+                <p className="text-blue-700">
                   Your choice:{" "}
                   <span
                     className={
@@ -290,7 +290,7 @@ export default function StartPlay() {
                     {decodeHtml(selectedAnswer)}
                   </span>
                 </p>
-                <p>
+                <p className="text-blue-700">
                   Correct answer:{" "}
                   <span className="text-green-600">
                     {decodeHtml(currentQuestion.correctAnswer)}
