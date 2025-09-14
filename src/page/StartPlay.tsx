@@ -24,6 +24,8 @@ const decodeHtml = (html: string) => {
   return txt.value;
 };
 
+// ... imports et types restent identiques
+
 export default function StartPlay() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -60,7 +62,7 @@ export default function StartPlay() {
     }
   };
 
-  // Fetch questions
+  // Fetch questions (inchangé)
   useEffect(() => {
     const fetchQuestions = async () => {
       setLoading(true);
@@ -90,7 +92,7 @@ export default function StartPlay() {
     fetchQuestions();
   }, [category, difficulty, numQuestions, selectedCategoryId]);
 
-  // Timer
+  // Timer (inchangé)
   useEffect(() => {
     if (mode !== "chrono" || quizFinished || loading) return;
     const timer = setInterval(() => {
@@ -106,7 +108,7 @@ export default function StartPlay() {
     return () => clearInterval(timer);
   }, [mode, quizFinished, loading]);
 
-  // Shuffle answers
+  // Shuffle answers (inchangé)
   useEffect(() => {
     if (questions.length > 0) {
       const current = questions[currentIndex];
@@ -114,7 +116,6 @@ export default function StartPlay() {
         () => Math.random() - 0.5
       );
       setShuffledAnswers(answers);
-      // Scroll automatique vers la question à chaque nouvelle question
       setTimeout(() => {
         questionRef.current?.scrollIntoView({
           behavior: "smooth",
@@ -124,10 +125,10 @@ export default function StartPlay() {
     }
   }, [currentIndex, questions]);
 
-  const handleAnswer = (answer: string) => {
-    setSelectedAnswer(answer);
+  // **Nouvelle fonction pour valider**
+  const handleValidate = () => {
     setShowCorrect(true);
-    if (answer === questions[currentIndex].correctAnswer) {
+    if (selectedAnswer === questions[currentIndex].correctAnswer) {
       setScore(score + 1);
     }
   };
@@ -142,7 +143,7 @@ export default function StartPlay() {
     }
   };
 
-  // Points animation
+  // Points animation et sauvegarde (inchangés)
   useEffect(() => {
     if (!quizFinished) return;
     const finalPoints =
@@ -230,14 +231,12 @@ export default function StartPlay() {
           </p>
           <p>
             <strong>Category:</strong>{" "}
-            {category
-              ? category === "aleatoire"
-                ? "Random"
-                : selectedCategoryId
-                ? categories.find((c) => c.id === parseInt(selectedCategoryId))
-                    ?.name
-                : "Selected"
-              : "—"}
+            {category === "aleatoire"
+              ? "Random"
+              : selectedCategoryId
+              ? categories.find((c) => c.id === parseInt(selectedCategoryId))
+                  ?.name
+              : "Selected"}
           </p>
           <p>
             <strong>Difficulty:</strong>{" "}
@@ -259,16 +258,13 @@ export default function StartPlay() {
             <p className="font-semibold text-lg md:text-xl break-words text-blue-700">
               {currentIndex + 1}. {decodeHtml(currentQuestion.question.text)}
             </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 text-black-500">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
               {shuffledAnswers.map((ans) => (
                 <button
                   key={ans}
-                  onClick={() => handleAnswer(ans)}
-                  disabled={!!selectedAnswer}
-                  className={`p-3 rounded-xl text-left break-words hover:bg-blue-200 disabled:opacity-50 transition-colors ${
-                    showCorrect && ans === currentQuestion.correctAnswer
-                      ? "bg-green-300"
-                      : "bg-blue-100"
+                  onClick={() => setSelectedAnswer(ans)}
+                  className={`p-3 rounded-xl text-left break-words hover:bg-blue-200 transition-colors ${
+                    selectedAnswer === ans ? "bg-blue-300" : "bg-blue-100"
                   }`}
                 >
                   {decodeHtml(ans)}
@@ -276,9 +272,20 @@ export default function StartPlay() {
               ))}
             </div>
 
-            {selectedAnswer && (
+            {/* Bouton Valider */}
+            {!showCorrect && selectedAnswer && (
+              <button
+                onClick={handleValidate}
+                className="mt-4 w-full py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-2xl shadow-md hover:scale-105 transition-transform duration-300"
+              >
+                Valider
+              </button>
+            )}
+
+            {/* Résultat */}
+            {showCorrect && (
               <div className="mt-4 font-bold space-y-1 break-words">
-                <p className="text-blue-700">
+                <p>
                   Your choice:{" "}
                   <span
                     className={
@@ -287,10 +294,10 @@ export default function StartPlay() {
                         : "text-red-600"
                     }
                   >
-                    {decodeHtml(selectedAnswer)}
+                    {decodeHtml(selectedAnswer!)}
                   </span>
                 </p>
-                <p className="text-blue-700">
+                <p>
                   Correct answer:{" "}
                   <span className="text-green-600">
                     {decodeHtml(currentQuestion.correctAnswer)}
@@ -307,7 +314,7 @@ export default function StartPlay() {
           </div>
         )}
 
-        {/* Final Score */}
+        {/* Final Score (inchangé) */}
         {quizFinished && (
           <>
             <div className="fixed inset-0 bg-black bg-opacity-50 z-40 backdrop-blur-sm"></div>
@@ -324,6 +331,12 @@ export default function StartPlay() {
               <p className="text-2xl md:text-3xl font-bold text-blue-600">
                 {animatedScore} points
               </p>
+              <button
+                onClick={() => navigate("/score")}
+                className="mt-4 w-full py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-2xl shadow-md hover:scale-105 transition-transform duration-300"
+              >
+                Go to Scoreboard
+              </button>
               <button
                 onClick={() => navigate("/")}
                 className="mt-4 w-full py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-2xl shadow-md hover:scale-105 transition-transform duration-300"
